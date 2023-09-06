@@ -10,10 +10,28 @@ import java.util.List;
 public class TodoListServiceImpl implements TodoListService {
     private TodoListRepository repository;
 
-
-    // constructor
     @Autowired
     public TodoListServiceImpl(TodoListRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public List<TodoList> findAll() {
+        return null;
+    }
+
+    @Override
+    public TodoList findById(Long aLong) {
+        return null;
+    }
+
+    @Override
+    public void save(TodoList entity) {
+
+    }
+
+    @Override
+    public void deleteById(Long aLong) {
+
     }
 }

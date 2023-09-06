@@ -1,5 +1,7 @@
 package com.t0khyo.todoList.service;
 
-public interface TodoListService {
+import com.t0khyo.todoList.entity.TodoList;
+
+public interface TodoListService extends BaseService<TodoList, Long> {
 
 }
