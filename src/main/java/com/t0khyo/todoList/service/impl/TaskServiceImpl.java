@@ -6,10 +6,10 @@ import com.t0khyo.todoList.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Optional;
 
-//ToDo: implement those methods
 public class TaskServiceImpl implements TaskService {
-    private TaskRepository repository;
+    private final TaskRepository repository;
 
     @Autowired
     public TaskServiceImpl(TaskRepository repository) {
@@ -18,21 +18,35 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
-    public Task findById(Long aLong) {
-        return null;
+    public Optional<Task> findById(Long theId) {
+        return repository.findById(theId);
     }
 
     @Override
-    public void save(Task entity) {
-
+    public Task save(Task theTask) {
+        return repository.save(theTask);
     }
 
     @Override
-    public void deleteById(Long aLong) {
+    public Optional<Task> update(Task entity) {
+        if (repository.existsById(entity.getId())) {
+            Task updatedTask = repository.save(entity);
+            return Optional.of(updatedTask);
+        }
+        return Optional.empty();
+    }
 
+    @Override
+    public String deleteById(Long theId) {
+        if (repository.existsById(theId)) {
+            repository.deleteById(theId);
+            return "success";
+        } else {
+            return "failed";
+        }
     }
 }
