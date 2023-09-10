@@ -36,16 +36,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> update(Task providedTask) {
-        Optional<Task> existingTask = repository.findById(providedTask.getId());
-
-        if (existingTask.isPresent()) {
-            Task updatedTask = existingTask.get();
-            updatedTask.setTitle(providedTask.getTitle());
-            updatedTask.setDueDate(providedTask.getDueDate());
-            updatedTask.setStatus(providedTask.getStatus());
-
-            return Optional.of(repository.save(updatedTask));
+    public Optional<Task> update(Long providedId,Task providedTask) {
+        if(repository.existsById(providedId)) {
+            providedTask.setId(providedId);
+            Task savedTask = repository.save(providedTask);
+            return Optional.of(savedTask);
         }
         return Optional.empty();
     }

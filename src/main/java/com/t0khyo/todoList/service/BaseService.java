@@ -11,7 +11,7 @@ public interface BaseService<T, ID> {
 
     T save(T entity);
 
-    Optional<T> update(T entity);
+    Optional<T> update(ID id,T entity);
 
     // Deletes a TodoList by ID and returns "success" if found and deleted, or "failed" otherwise.
     String deleteById(ID id);

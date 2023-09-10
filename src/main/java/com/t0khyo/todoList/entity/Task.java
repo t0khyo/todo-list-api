@@ -1,5 +1,6 @@
 package com.t0khyo.todoList.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -24,6 +25,7 @@ public class Task {
     private LocalDate dueDate;
 
     @JsonIgnoreProperties("tasks") // Ignore 'tasks' property when serializing to JSON
+    @JsonBackReference
     @ManyToOne(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinColumn(name = "todo_list_id")
     private TodoList todoList;
