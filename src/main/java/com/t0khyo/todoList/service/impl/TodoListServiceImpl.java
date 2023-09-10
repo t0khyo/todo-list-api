@@ -11,32 +11,32 @@ import java.util.Optional;
 
 @Service
 public class TodoListServiceImpl implements TodoListService {
-    private final TodoListRepository repository;
+    private final TodoListRepository TodoRepository;
 
     @Autowired
-    public TodoListServiceImpl(TodoListRepository repository) {
-        this.repository = repository;
+    public TodoListServiceImpl(TodoListRepository TodoRepository) {
+        this.TodoRepository = TodoRepository;
     }
 
     @Override
     public List<TodoList> findAll() {
-        return repository.findAll();
+        return TodoRepository.findAll();
     }
 
     @Override
-    public Optional<TodoList> findById(Long theId) {
-        return repository.findById(theId);
+    public Optional<TodoList> findById(Long todoId) {
+        return TodoRepository.findById(todoId);
     }
 
     @Override
     public TodoList save(TodoList theTodoList) {
-        return repository.save(theTodoList);
+        return TodoRepository.save(theTodoList);
     }
 
     @Override
-    public Optional<TodoList> update(TodoList entity) {
-        if (repository.existsById(entity.getId())) {
-            TodoList updatedTodoList = repository.save(entity);
+    public Optional<TodoList> update(TodoList providedTodo) {
+        if (TodoRepository.existsById(providedTodo.getId())) {
+            TodoList updatedTodoList = TodoRepository.save(providedTodo);
             return Optional.of(updatedTodoList);
         }
         return Optional.empty();
@@ -44,8 +44,8 @@ public class TodoListServiceImpl implements TodoListService {
 
     @Override
     public String deleteById(Long theId) {
-        if (repository.existsById(theId)) {
-            repository.deleteById(theId);
+        if (TodoRepository.existsById(theId)) {
+            TodoRepository.deleteById(theId);
             return "success";
         } else {
             return "failed";
