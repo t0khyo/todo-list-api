@@ -15,4 +15,6 @@ public interface BaseService<T, ID> {
 
     // Deletes a TodoList by ID and returns "success" if found and deleted, or "failed" otherwise.
     String deleteById(ID id);
+
+    boolean existsById(ID id);
 }

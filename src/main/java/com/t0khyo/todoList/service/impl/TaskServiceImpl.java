@@ -26,6 +26,11 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<Task> findAllByTodoListId(Long theTodoListId) {
+        return repository.findAllByTodoListId(theTodoListId);
+    }
+
+    @Override
     public Optional<Task> findById(Long taskId) {
         return repository.findById(taskId);
     }
@@ -36,8 +41,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> update(Long providedId,Task providedTask) {
-        if(repository.existsById(providedId)) {
+    public Optional<Task> update(Long providedId, Task providedTask) {
+        if (repository.existsById(providedId)) {
             providedTask.setId(providedId);
             Task savedTask = repository.save(providedTask);
             return Optional.of(savedTask);
@@ -53,6 +58,11 @@ public class TaskServiceImpl implements TaskService {
         } else {
             return "not_found";
         }
+    }
+
+    @Override
+    public boolean existsById(Long theId) {
+        return repository.existsById(theId);
     }
 
 

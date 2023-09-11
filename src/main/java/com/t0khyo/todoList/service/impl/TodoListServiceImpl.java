@@ -34,7 +34,7 @@ public class TodoListServiceImpl implements TodoListService {
     }
 
     @Override
-    public Optional<TodoList> update(Long providedId,TodoList providedTodo) {
+    public Optional<TodoList> update(Long providedId, TodoList providedTodo) {
         if (repository.existsById(providedId)) {
             providedTodo.setId(providedId);
             TodoList updatedTodoList = repository.save(providedTodo);
@@ -51,5 +51,10 @@ public class TodoListServiceImpl implements TodoListService {
         } else {
             return "failed";
         }
+    }
+
+    @Override
+    public boolean existsById(Long theId) {
+        return repository.existsById(theId);
     }
 }

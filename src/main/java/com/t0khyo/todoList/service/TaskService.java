@@ -4,6 +4,7 @@ import com.t0khyo.todoList.entity.Task;
 import com.t0khyo.todoList.entity.TaskStatus;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public interface TaskService extends BaseService<Task, Long> {
 
@@ -12,4 +13,6 @@ public interface TaskService extends BaseService<Task, Long> {
     String updateTaskStatusById(Long theId, TaskStatus theStatus);
 
     String updateTaskDueDateById(Long taskId, LocalDate newDueDate);
+
+    List<Task> findAllByTodoListId(Long TodoListId);
 }
