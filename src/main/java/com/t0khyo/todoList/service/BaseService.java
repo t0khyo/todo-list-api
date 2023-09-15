@@ -3,15 +3,15 @@ package com.t0khyo.todoList.service;
 import java.util.List;
 import java.util.Optional;
 
-public interface BaseService<T, ID> {
+public interface BaseService<T, ID, DTO> {
 
     List<T> findAll();
 
     Optional<T> findById(ID id);
 
-    T save(T entity);
+    T save(DTO dto);
 
-    Optional<T> update(ID id,T entity);
+    Optional<T> update(ID id,DTO dto);
 
     // Deletes a TodoList by ID and returns "success" if found and deleted, or "failed" otherwise.
     String deleteById(ID id);
