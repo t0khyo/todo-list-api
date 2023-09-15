@@ -1,16 +1,16 @@
 package com.t0khyo.todoList.service.impl;
 
+import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
-import com.t0khyo.todoList.entity.TaskStatus;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+// ToDo: implement the methods and add clear exceptions from 'com.t0khyo.todoList.exception' package
 @Service
 public class TaskServiceImpl implements TaskService {
     private final TaskRepository repository;
@@ -22,42 +22,32 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAll() {
-        return repository.findAll();
+        return null;
     }
 
     @Override
     public List<Task> findAllByTodoListId(Long theTodoListId) {
-        return repository.findAllByTodoListId(theTodoListId);
+        return null;
     }
 
     @Override
     public Optional<Task> findById(Long taskId) {
-        return repository.findById(taskId);
+        return null;
     }
 
     @Override
-    public Task save(Task theTask) {
-        return repository.save(theTask);
+    public Task save(TaskDTO taskDTO) {
+        return null;
     }
 
     @Override
-    public Optional<Task> update(Long providedId, Task providedTask) {
-        if (repository.existsById(providedId)) {
-            providedTask.setId(providedId);
-            Task savedTask = repository.save(providedTask);
-            return Optional.of(savedTask);
-        }
-        return Optional.empty();
+    public Optional<Task> update(Long providedId, TaskDTO taskDTO) {
+        return null;
     }
 
     @Override
     public String deleteById(Long taskId) {
-        if (repository.existsById(taskId)) {
-            repository.deleteById(taskId);
-            return "success";
-        } else {
-            return "not_found";
-        }
+        return null;
     }
 
     @Override
@@ -65,35 +55,4 @@ public class TaskServiceImpl implements TaskService {
         return repository.existsById(theId);
     }
 
-
-    @Override
-    public String updateTaskStatusById(Long taskId, TaskStatus theStatus) {
-        Optional<Task> optionalTask = repository.findById(taskId);
-        if (optionalTask.isPresent()) {
-            Task theTask = optionalTask.get();
-
-            try {
-                theTask.setStatus(theStatus);
-                repository.save(theTask);
-                return "success";
-            } catch (IllegalArgumentException e) {
-                return "invalid_status";
-            }
-        } else {
-            return "not_found";
-        }
-    }
-
-    @Override
-    public String updateTaskDueDateById(Long taskId, LocalDate newDueDate) {
-        Optional<Task> optionalTask = repository.findById(taskId);
-        if (optionalTask.isPresent()) {
-            Task theTask = optionalTask.get();
-            theTask.setDueDate(newDueDate);
-            repository.save(theTask);
-            return "success";
-        } else {
-            return "not_found";
-        }
-    }
 }
