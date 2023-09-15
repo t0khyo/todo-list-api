@@ -30,7 +30,7 @@ public class TodoListServiceImpl implements TodoListService {
     }
 
     @Override
-    public Optional<TodoList> findById(Long todoId) {
+    public TodoList findById(Long todoId) {
         return null;
     }
 

@@ -7,13 +7,12 @@ public interface BaseService<T, ID, DTO> {
 
     List<T> findAll();
 
-    Optional<T> findById(ID id);
+    T findById(ID id);
 
     T save(DTO dto);
 
     Optional<T> update(ID id,DTO dto);
 
-    // Deletes a TodoList by ID and returns "success" if found and deleted, or "failed" otherwise.
     String deleteById(ID id);
 
     boolean existsById(ID id);

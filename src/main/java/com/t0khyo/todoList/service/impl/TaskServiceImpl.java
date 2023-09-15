@@ -2,6 +2,7 @@ package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
+import com.t0khyo.todoList.exception.TaskNotFoundException;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,7 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
@@ -31,7 +32,7 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Optional<Task> findById(Long taskId) {
+    public Task findById(Long taskId) {
         return null;
     }
 
