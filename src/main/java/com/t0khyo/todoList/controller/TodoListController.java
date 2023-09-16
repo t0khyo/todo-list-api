@@ -3,6 +3,7 @@ package com.t0khyo.todoList.controller;
 import com.t0khyo.todoList.dto.TodoListDTO;
 import com.t0khyo.todoList.entity.TodoList;
 import com.t0khyo.todoList.service.TodoListService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,7 +45,7 @@ public class TodoListController {
 
     // Create a new todoList
     @PostMapping("/")
-    public ResponseEntity<TodoList> createTodoList(@RequestBody TodoListDTO todoListDTO) {
+    public ResponseEntity<TodoList> createTodoList(@RequestBody @Valid TodoListDTO todoListDTO) {
         TodoList newTodList = todoListService.save(todoListDTO);
         return new ResponseEntity<>(newTodList, HttpStatus.CREATED);
     }
@@ -53,7 +54,7 @@ public class TodoListController {
     @PutMapping("/{todoListId}")
     public ResponseEntity<TodoList> updateTodoList(
             @PathVariable("todoListId") Long todoListId,
-            @RequestBody TodoListDTO todoListDTO
+            @RequestBody @Valid TodoListDTO todoListDTO
     ) {
         TodoList updatedTodoList = todoListService.update(todoListId, todoListDTO);
         return ResponseEntity.ok(updatedTodoList);
