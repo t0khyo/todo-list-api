@@ -6,5 +6,5 @@ import com.t0khyo.todoList.entity.Task;
 import java.util.List;
 
 public interface TaskService extends BaseService<Task, Long, TaskDTO> {
-    List<Task> findAllByTodoListId(Long TodoListId);
+
 }

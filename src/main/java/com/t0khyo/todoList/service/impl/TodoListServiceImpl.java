@@ -1,6 +1,7 @@
 package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TodoListDTO;
+import com.t0khyo.todoList.entity.Task;
 import com.t0khyo.todoList.entity.TodoList;
 import com.t0khyo.todoList.exception.TodoListNotFoundException;
 import com.t0khyo.todoList.repository.TodoListRepository;
@@ -66,5 +67,13 @@ public class TodoListServiceImpl implements TodoListService {
     @Override
     public boolean existsById(Long todoListId) {
         return repository.existsById(todoListId);
+    }
+
+    @Override
+    public List<Task> findAllTasksByTodoListId(Long todoListId) {
+        if (!repository.existsById(todoListId)) {
+            throw new TodoListNotFoundException(todoListId);
+        }
+        return repository.findAllTasksByTodoListId(todoListId);
     }
 }
