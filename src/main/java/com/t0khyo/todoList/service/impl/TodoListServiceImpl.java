@@ -2,13 +2,13 @@ package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TodoListDTO;
 import com.t0khyo.todoList.entity.TodoList;
+import com.t0khyo.todoList.exception.TodoListNotFoundException;
 import com.t0khyo.todoList.repository.TodoListRepository;
 import com.t0khyo.todoList.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 /* ToDo:
  *   * implement the methods and add clear exceptions from 'com.t0khyo.todoList.exception' package
@@ -26,31 +26,45 @@ public class TodoListServiceImpl implements TodoListService {
 
     @Override
     public List<TodoList> findAll() {
-        return null;
+        return repository.findAll();
     }
 
     @Override
-    public TodoList findById(Long todoId) {
-        return null;
+    public TodoList findById(Long todoListId) {
+        return repository.findById(todoListId)
+                .orElseThrow(() -> new TodoListNotFoundException(todoListId));
     }
 
     @Override
     public TodoList save(TodoListDTO todoListDTO) {
-        return null;
+        // todo: weather to check if the todoList exists and return an exception if it does
+        TodoList newTodoList = new TodoList(todoListDTO.getName());
+        return repository.save(newTodoList);
     }
 
     @Override
-    public Optional<TodoList> update(Long providedId, TodoListDTO todoListDTO) {
-        return null;
+    public TodoList update(Long todoListId, TodoListDTO todoListDTO) {
+        // Find todoList to update by its ID
+        TodoList existingTodoList = repository.findById(todoListId)
+                .orElseThrow(() -> new TodoListNotFoundException(todoListId));
+
+        // update  the todoList with data form the DTO
+        existingTodoList.setName(todoListDTO.getName());
+
+        // save the updated todoList
+        return repository.save(existingTodoList);
     }
 
     @Override
-    public String deleteById(Long theId) {
-        return null;
+    public void deleteById(Long todoListId) {
+        if (!repository.existsById(todoListId)) {
+            throw new TodoListNotFoundException(todoListId);
+        }
+        repository.deleteById(todoListId);
     }
 
     @Override
-    public boolean existsById(Long theId) {
-        return repository.existsById(theId);
+    public boolean existsById(Long todoListId) {
+        return repository.existsById(todoListId);
     }
 }

@@ -11,9 +11,9 @@ public interface BaseService<T, ID, DTO> {
 
     T save(DTO dto);
 
-    Optional<T> update(ID id,DTO dto);
+    T update(ID id,DTO dto);
 
-    String deleteById(ID id);
+    void deleteById(ID id);
 
     boolean existsById(ID id);
 }
