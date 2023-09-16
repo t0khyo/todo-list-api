@@ -1,6 +1,5 @@
 package com.t0khyo.todoList.entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
@@ -35,9 +34,9 @@ public class Task {
         this.status = TaskStatus.INCOMPLETE;
     }
 
-    public Task(String title, TaskStatus status, LocalDate dueDate) {
-        this.setTitle(title); // the setters for checking null values
-        this.setStatus(status);
+    public Task(String title, LocalDate dueDate) {
+        this.title = title;
+        this.status = TaskStatus.INCOMPLETE;
         this.dueDate = dueDate;
     }
 

@@ -2,6 +2,7 @@ package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
+import com.t0khyo.todoList.exception.TaskNotFoundException;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,26 +27,37 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task findById(Long taskId) {
-        return null;
+        return repository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
 
     @Override
     public Task save(TaskDTO taskDTO) {
-        return null;
+        Task newTask = new Task(taskDTO.getTitle(), taskDTO.getDueDate());
+        return repository.save(newTask);
     }
 
     @Override
-    public Task update(Long providedId, TaskDTO taskDTO) {
-        return null;
+    public Task update(Long taskId, TaskDTO taskDTO) {
+        Task theTask = repository.findById(taskId)
+                .orElseThrow(() -> new TaskNotFoundException(taskId));
+
+        theTask.setTitle(taskDTO.getTitle());
+        theTask.setDueDate(taskDTO.getDueDate());
+
+        return repository.save(theTask);
     }
 
     @Override
     public void deleteById(Long taskId) {
-
+        if (!repository.existsById(taskId)) {
+            throw new TaskNotFoundException(taskId);
+        }
+        repository.deleteById(taskId);
     }
 
     @Override
-    public boolean existsById(Long theId) {
-        return repository.existsById(theId);
+    public boolean existsById(Long taskId) {
+        return repository.existsById(taskId);
     }
 }
