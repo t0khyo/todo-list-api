@@ -60,4 +60,9 @@ public class TaskServiceImpl implements TaskService {
     public boolean existsById(Long taskId) {
         return repository.existsById(taskId);
     }
+
+    @Override
+    public boolean taskBelongsToTodoList(Long taskId, Long todoListId) {
+        return repository.countByTaskIdAndTodoListId(taskId, todoListId) > 0;
+    }
 }

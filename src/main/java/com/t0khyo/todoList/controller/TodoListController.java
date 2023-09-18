@@ -46,8 +46,7 @@ public class TodoListController {
     // Create a new todoList
     @PostMapping("/")
     public ResponseEntity<TodoList> createTodoList(@RequestBody @Valid TodoListDTO todoListDTO) {
-        TodoList newTodList = todoListService.save(todoListDTO);
-        return new ResponseEntity<>(newTodList, HttpStatus.CREATED);
+        return ResponseEntity.status(HttpStatus.CREATED).body(todoListService.save(todoListDTO));
     }
 
     // Update a todoList by its ID
@@ -56,14 +55,13 @@ public class TodoListController {
             @PathVariable("todoListId") Long todoListId,
             @RequestBody @Valid TodoListDTO todoListDTO
     ) {
-        TodoList updatedTodoList = todoListService.update(todoListId, todoListDTO);
-        return ResponseEntity.ok(updatedTodoList);
+        return ResponseEntity.ok(todoListService.update(todoListId, todoListDTO));
     }
 
     // Delete a todoList by its ID
     @DeleteMapping("/{todoListId}")
     public ResponseEntity<String> deleteTodoList(@PathVariable("todoListId") long todoListId) {
         todoListService.deleteById(todoListId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }
