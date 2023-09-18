@@ -7,5 +7,8 @@ import com.t0khyo.todoList.entity.TodoList;
 import java.util.List;
 
 public interface TodoListService extends BaseService<TodoList, Long, TodoListDTO> {
+    List<TodoList> findAll();
     List<Task> findAllTasksByTodoListId(Long todoListId);
+
+    TodoList save(TodoListDTO todoListDTO);
 }
