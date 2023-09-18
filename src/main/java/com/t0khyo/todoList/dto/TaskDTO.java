@@ -9,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-// ToDo: implement TaskDTO class
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,3 +20,5 @@ public class TaskDTO {
     @Future
     private LocalDate dueDate;
 }
+
+

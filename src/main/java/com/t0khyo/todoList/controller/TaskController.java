@@ -19,9 +19,9 @@ import java.util.List;
  *   - implement deleteTask()
  */
 
-
+// todo: remove todoList id
 @RestController
-@RequestMapping("/api/v1/todo-lists/{todoListId}/tasks")
+@RequestMapping("/api/v1/tasks")
 public class TaskController {
     TaskService taskService;
 
@@ -30,38 +30,29 @@ public class TaskController {
         this.taskService = taskService;
     }
 
-    @GetMapping("/")
-    public ResponseEntity<List<Task>> getAllTasksByListId(@PathVariable("todoListId") long todoListId) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(taskService.findAllByTodoListId(todoListId));
-    }
-
     @GetMapping("/{taskId}")
-    public ResponseEntity<Task> getTaskById(@PathVariable("todoListId") long todoListId, @PathVariable("taskId") long taskId) {
-        taskService.verifyTaskBelongsToTodoList(taskId, todoListId);
-        return ResponseEntity.status(HttpStatus.FOUND).body(taskService.findById(taskId));
+    public ResponseEntity<Task> getTaskById(@PathVariable("taskId") long taskId) {
+        return ResponseEntity.status(HttpStatus.OK).body(taskService.findById(taskId));
     }
 
     @PostMapping("/")
-    public ResponseEntity<Task> createTask(@PathVariable("todoListId") long todoListId, @RequestBody TaskDTO taskDTO) {
+    public ResponseEntity<Task> createTask(@RequestParam("todoListId") long todoListId, @RequestBody TaskDTO taskDTO) {
         return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(todoListId, taskDTO));
     }
 
     @PutMapping("/{taskId}")
     public ResponseEntity<Task> updateTask(
-            @PathVariable("todoListId") long todoListId,
             @PathVariable("taskId") long taskId,
             @RequestBody TaskDTO taskDTO
     ) {
-        taskService.verifyTaskBelongsToTodoList(taskId, todoListId);
         return ResponseEntity.ok(taskService.update(taskId, taskDTO));
     }
 
     @DeleteMapping("/{taskId}")
-    public ResponseEntity<?> deleteTask(@PathVariable("todoListId") long todoListId,
-                                        @PathVariable("taskId") long taskId
+    public ResponseEntity<?> deleteTask(
+            @PathVariable("taskId") long taskId
     ) {
-        taskService.verifyTaskBelongsToTodoList(taskId, todoListId);
         taskService.deleteById(taskId);
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 }

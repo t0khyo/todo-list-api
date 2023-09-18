@@ -2,16 +2,12 @@ package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
-import com.t0khyo.todoList.exception.TaskNotBelongingToTodoListException;
 import com.t0khyo.todoList.exception.TaskNotFoundException;
-import com.t0khyo.todoList.exception.TodoListNotFoundException;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
 import com.t0khyo.todoList.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 // ToDo: implement the methods and add clear exceptions from 'com.t0khyo.todoList.exception' package
 @Service
@@ -23,14 +19,6 @@ public class TaskServiceImpl implements TaskService {
     public TaskServiceImpl(TaskRepository repository, TodoListService todoListService) {
         this.repository = repository;
         this.todoListService = todoListService;
-    }
-
-    @Override
-    public List<Task> findAllByTodoListId(long todoListId) {
-        if (!repository.todoListExistsById(todoListId)) {
-            throw new TodoListNotFoundException(todoListId);
-        }
-        return repository.findAllByTodoListId(todoListId);
     }
 
     @Override
@@ -64,25 +52,5 @@ public class TaskServiceImpl implements TaskService {
             throw new TaskNotFoundException(taskId);
         }
         repository.deleteById(taskId);
-    }
-
-    @Override
-    public boolean existsById(Long taskId) {
-        return repository.existsById(taskId);
-    }
-
-    @Override
-    public void verifyTaskBelongsToTodoList(Long taskId, Long todoListId) {
-        if (!repository.existsById(taskId)) {
-            throw new TaskNotFoundException(taskId);
-        }
-
-        if (!repository.todoListExistsById(todoListId)) {
-            throw new TodoListNotFoundException(todoListId);
-        }
-
-        if (!repository.taskBelongsToTodoList(taskId, todoListId)) {
-            throw new TaskNotBelongingToTodoListException(taskId, todoListId);
-        }
     }
 }

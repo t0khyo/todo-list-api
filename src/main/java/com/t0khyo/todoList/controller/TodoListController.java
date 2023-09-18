@@ -1,6 +1,7 @@
 package com.t0khyo.todoList.controller;
 
 import com.t0khyo.todoList.dto.TodoListDTO;
+import com.t0khyo.todoList.entity.Task;
 import com.t0khyo.todoList.entity.TodoList;
 import com.t0khyo.todoList.service.TodoListService;
 import jakarta.validation.Valid;
@@ -10,15 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-/*
- *  ToDo:   after refactor the service layer and handle exceptions do the following
- *   - implement getTodoLists()
- *   - implement getTodoListByID()
- *   - implement createTodoList() with TodoListDTO
- *   - implement updateTodoList() with TodoListDTO
- *   - implement deleteTodoList()
- */
 
 @RestController
 @RequestMapping("/api/v1/todo-lists")
@@ -41,6 +33,11 @@ public class TodoListController {
     public ResponseEntity<TodoList> getTodoListById(@PathVariable("todoListId") Long todoListId) {
         TodoList todoList = todoListService.findById(todoListId);
         return new ResponseEntity<>(todoList, HttpStatus.FOUND);
+    }
+
+    @GetMapping("/{todoListId}/tasks")
+    public ResponseEntity<List<Task>> getTasks(@PathVariable("todoListId") long todoListId) {
+        return ResponseEntity.ok(todoListService.findById(todoListId).getTasks());
     }
 
     // Create a new todoList

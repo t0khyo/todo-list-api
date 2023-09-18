@@ -37,7 +37,6 @@ public class TodoListServiceImpl implements TodoListService {
 
     @Override
     public TodoList save(TodoListDTO todoListDTO) {
-        // todo: weather to check if the todoList exists and return an exception if it does
         TodoList newTodoList = new TodoList(todoListDTO.getName());
         return repository.save(newTodoList);
     }
@@ -62,10 +61,4 @@ public class TodoListServiceImpl implements TodoListService {
         }
         repository.deleteById(todoListId);
     }
-
-    @Override
-    public boolean existsById(Long todoListId) {
-        return repository.existsById(todoListId);
-    }
-
 }
