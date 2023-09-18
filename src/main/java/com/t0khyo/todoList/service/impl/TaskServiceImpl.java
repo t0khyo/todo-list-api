@@ -4,6 +4,7 @@ import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
 import com.t0khyo.todoList.exception.TaskNotBelongingToTodoListException;
 import com.t0khyo.todoList.exception.TaskNotFoundException;
+import com.t0khyo.todoList.exception.TodoListNotFoundException;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
 import com.t0khyo.todoList.service.TodoListService;
@@ -26,6 +27,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<Task> findAllByTodoListId(long todoListId) {
+        if (!repository.todoListExistsById(todoListId)) {
+            throw new TodoListNotFoundException(todoListId);
+        }
         return repository.findAllByTodoListId(todoListId);
     }
 
@@ -34,6 +38,7 @@ public class TaskServiceImpl implements TaskService {
         return repository.findById(taskId)
                 .orElseThrow(() -> new TaskNotFoundException(taskId));
     }
+
 
     @Override
     public Task save(long todoListId, TaskDTO taskDTO) {
@@ -68,8 +73,15 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public void verifyTaskBelongsToTodoList(Long taskId, Long todoListId) {
-        boolean belongsToTodoList = repository.countByTaskIdAndTodoListId(taskId, todoListId) > 0;
-        if (!belongsToTodoList) {
+        if (!repository.existsById(taskId)) {
+            throw new TaskNotFoundException(taskId);
+        }
+
+        if (!repository.todoListExistsById(todoListId)) {
+            throw new TodoListNotFoundException(todoListId);
+        }
+
+        if (!repository.taskBelongsToTodoList(taskId, todoListId)) {
             throw new TaskNotBelongingToTodoListException(taskId, todoListId);
         }
     }

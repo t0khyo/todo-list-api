@@ -10,8 +10,11 @@ import java.util.List;
 
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
-    @Query("SELECT COUNT(t) FROM Task t WHERE t.id = :taskId AND t.todoList.id = :todoListId")
-    int countByTaskIdAndTodoListId(@Param("taskId") Long taskId, @Param("todoListId") Long todoListId);
+    @Query("SELECT COUNT(t) > 0 FROM Task t WHERE t.id = :taskId AND t.todoList.id = :todoListId")
+    boolean taskBelongsToTodoList(@Param("taskId") Long taskId, @Param("todoListId") Long todoListId);
 
     List<Task> findAllByTodoListId(long todoListId);
+
+    @Query("SELECT COUNT(tl) > 0 FROM TodoList tl WHERE tl.id = :todoListId")
+    boolean todoListExistsById(@Param("todoListId") Long todoListId);
 }

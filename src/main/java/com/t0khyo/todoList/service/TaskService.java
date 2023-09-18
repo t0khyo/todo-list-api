@@ -5,10 +5,18 @@ import com.t0khyo.todoList.entity.Task;
 
 import java.util.List;
 
-public interface TaskService extends BaseService<Task, Long, TaskDTO> {
+public interface TaskService {
     List<Task> findAllByTodoListId(long todoListId);
 
+    Task findById(Long taskId);
+
     Task save(long todoListId, TaskDTO taskDTO);
+
+    Task update(Long taskId, TaskDTO taskDTO);
+
+    void deleteById(Long taskId);
+
+    boolean existsById(Long taskId);
 
     void verifyTaskBelongsToTodoList(Long taskId, Long todoListId);
 }

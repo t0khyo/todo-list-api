@@ -32,20 +32,18 @@ public class TaskController {
 
     @GetMapping("/")
     public ResponseEntity<List<Task>> getAllTasksByListId(@PathVariable("todoListId") long todoListId) {
-        return new ResponseEntity<>(taskService.findAllByTodoListId(todoListId), HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND).body(taskService.findAllByTodoListId(todoListId));
     }
 
     @GetMapping("/{taskId}")
     public ResponseEntity<Task> getTaskById(@PathVariable("todoListId") long todoListId, @PathVariable("taskId") long taskId) {
         taskService.verifyTaskBelongsToTodoList(taskId, todoListId);
-        Task theTask = taskService.findById(taskId);
-        return new ResponseEntity<>(theTask, HttpStatus.FOUND);
+        return ResponseEntity.status(HttpStatus.FOUND).body(taskService.findById(taskId));
     }
 
     @PostMapping("/")
     public ResponseEntity<Task> createTask(@PathVariable("todoListId") long todoListId, @RequestBody TaskDTO taskDTO) {
-        Task savedTask = taskService.save(todoListId, taskDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedTask);
+        return ResponseEntity.status(HttpStatus.CREATED).body(taskService.save(todoListId, taskDTO));
     }
 
     @PutMapping("/{taskId}")
@@ -55,8 +53,7 @@ public class TaskController {
             @RequestBody TaskDTO taskDTO
     ) {
         taskService.verifyTaskBelongsToTodoList(taskId, todoListId);
-        Task updatedTask = taskService.update(taskId, taskDTO);
-        return ResponseEntity.ok(updatedTask);
+        return ResponseEntity.ok(taskService.update(taskId, taskDTO));
     }
 
     @DeleteMapping("/{taskId}")
