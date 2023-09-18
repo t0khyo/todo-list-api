@@ -1,11 +1,14 @@
 package com.t0khyo.todoList.controller;
 
+import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
 import com.t0khyo.todoList.service.TaskService;
-import com.t0khyo.todoList.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /*
  *  ToDo: after refactor the service layer and handle exceptions do the following
@@ -21,41 +24,44 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/v1/todo-lists/{todoListId}/tasks")
 public class TaskController {
     TaskService taskService;
-    TodoListService todoListService;
 
     @Autowired
-    public TaskController(TaskService taskService, TodoListService todoListService) {
+    public TaskController(TaskService taskService) {
         this.taskService = taskService;
-        this.todoListService = todoListService;
     }
 
     @GetMapping("/")
-    public ResponseEntity<?> getAllTasks(@PathVariable("todoListId") long todoListId) {
-        return null;
+    public ResponseEntity<List<Task>> getAllTasks(@PathVariable("todoListId") long todoListId) {
+        return new ResponseEntity<>(taskService.findAll(), HttpStatus.FOUND);
     }
 
     @GetMapping("/{taskId}")
-    public ResponseEntity<?> getTaskById(@PathVariable("taskId") long taskId) {
-        return null;
+    public ResponseEntity<Task> getTaskById(@PathVariable("todoListId") long todoListId, @PathVariable("taskId") long taskId) {
+        Task theTask = taskService.findById(taskId);
+        return new ResponseEntity<>(theTask, HttpStatus.FOUND);
     }
 
     @PostMapping("/")
-    public ResponseEntity<?> createTask(@PathVariable("todoListId") long todoListId, @RequestBody Task theTask) {
-        return null;
+    public ResponseEntity<Task> createTask(@PathVariable("todoListId") long todoListId, @RequestBody TaskDTO taskDTO) {
+        Task savedTask = taskService.save(taskDTO);
+        return ResponseEntity.ok(savedTask);
     }
 
     @PutMapping("/{taskId}")
-    public ResponseEntity<?> updateTask(@PathVariable("todoListId") long todoListId,
-                                        @PathVariable("taskId") long taskId,
-                                        @RequestBody Task providedTask
+    public ResponseEntity<Task> updateTask(
+            @PathVariable("todoListId") long todoListId,
+            @PathVariable("taskId") long taskId,
+            @RequestBody TaskDTO taskDTO
     ) {
-        return null;
+        Task updatedTask = taskService.update(taskId, taskDTO);
+        return ResponseEntity.ok(updatedTask);
     }
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<?> deleteTask(@PathVariable("todoListId") long todoListId,
                                         @PathVariable("taskId") long taskId
     ) {
-       return null;
+        taskService.deleteById(taskId);
+        return ResponseEntity.noContent().build();
     }
 }
