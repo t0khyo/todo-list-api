@@ -1,13 +1,19 @@
 package com.t0khyo.todoList.service.impl;
 
+import com.t0khyo.todoList.dto.TodoListDTO;
 import com.t0khyo.todoList.entity.TodoList;
+import com.t0khyo.todoList.exception.TodoListNotFoundException;
 import com.t0khyo.todoList.repository.TodoListRepository;
 import com.t0khyo.todoList.service.TodoListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+
+/* ToDo:
+ *   * implement the methods and add clear exceptions from 'com.t0khyo.todoList.exception' package
+ *   * keep in mind to review the return types and the parameters and refactor if needed amigos
+ */
 
 @Service
 public class TodoListServiceImpl implements TodoListService {
@@ -24,37 +30,35 @@ public class TodoListServiceImpl implements TodoListService {
     }
 
     @Override
-    public Optional<TodoList> findById(Long todoId) {
-        return repository.findById(todoId);
+    public TodoList findById(Long todoListId) {
+        return repository.findById(todoListId)
+                .orElseThrow(() -> new TodoListNotFoundException(todoListId));
     }
 
     @Override
-    public TodoList save(TodoList theTodoList) {
-        return repository.save(theTodoList);
+    public TodoList save(TodoListDTO todoListDTO) {
+        TodoList newTodoList = new TodoList(todoListDTO.getName());
+        return repository.save(newTodoList);
     }
 
     @Override
-    public Optional<TodoList> update(Long providedId, TodoList providedTodo) {
-        if (repository.existsById(providedId)) {
-            providedTodo.setId(providedId);
-            TodoList updatedTodoList = repository.save(providedTodo);
-            return Optional.of(updatedTodoList);
+    public TodoList update(Long todoListId, TodoListDTO todoListDTO) {
+        // Find todoList to update by its ID
+        TodoList existingTodoList = repository.findById(todoListId)
+                .orElseThrow(() -> new TodoListNotFoundException(todoListId));
+
+        // update  the todoList with data form the DTO
+        existingTodoList.setName(todoListDTO.getName());
+
+        // save the updated todoList
+        return repository.save(existingTodoList);
+    }
+
+    @Override
+    public void deleteById(Long todoListId) {
+        if (!repository.existsById(todoListId)) {
+            throw new TodoListNotFoundException(todoListId);
         }
-        return Optional.empty();
-    }
-
-    @Override
-    public String deleteById(Long theId) {
-        if (repository.existsById(theId)) {
-            repository.deleteById(theId);
-            return "success";
-        } else {
-            return "failed";
-        }
-    }
-
-    @Override
-    public boolean existsById(Long theId) {
-        return repository.existsById(theId);
+        repository.deleteById(todoListId);
     }
 }

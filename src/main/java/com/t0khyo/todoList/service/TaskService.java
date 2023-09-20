@@ -1,18 +1,18 @@
 package com.t0khyo.todoList.service;
 
+import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
-import com.t0khyo.todoList.entity.TaskStatus;
 
-import java.time.LocalDate;
 import java.util.List;
 
-public interface TaskService extends BaseService<Task, Long> {
+public interface TaskService {
+    Task findById(Long taskId);
 
-    // Updates task status by ID, returning 'success', 'invalid_status' for invalid status values, and 'not_found'.
+    Task save(long todoListId, TaskDTO taskDTO);
 
-    String updateTaskStatusById(Long theId, TaskStatus theStatus);
+    Task update(Long taskId, TaskDTO taskDTO);
 
-    String updateTaskDueDateById(Long taskId, LocalDate newDueDate);
+    Task updateTaskStatus(long taskId, String taskStatus);
 
-    List<Task> findAllByTodoListId(Long TodoListId);
+    void deleteById(Long taskId);
 }
