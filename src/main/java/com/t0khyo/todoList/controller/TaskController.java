@@ -47,7 +47,7 @@ public class TaskController {
     }
 
     @PatchMapping("{taskId}/status")
-    public ResponseEntity<?> complete(
+    public ResponseEntity<?> updateStatus(
             @PathVariable long taskId,
             @RequestParam String taskStatus
     ){
