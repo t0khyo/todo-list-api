@@ -10,16 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-/*
- *  ToDo: after refactor the service layer and handle exceptions do the following
- *   - keep on mind to refactor parameters and return values
- *   - implement getTaskByID()
- *   - implement createTask() with TaskDTO
- *   - implement updateTask() with TaskDTO
- *   - implement deleteTask()
- */
-
-// todo: remove todoList id
 @RestController
 @RequestMapping("/api/v1/tasks")
 public class TaskController {
@@ -54,5 +44,13 @@ public class TaskController {
     ) {
         taskService.deleteById(taskId);
         return ResponseEntity.ok().build();
+    }
+
+    @PatchMapping("{taskId}/status")
+    public ResponseEntity<?> complete(
+            @PathVariable long taskId,
+            @RequestParam String taskStatus
+    ){
+        return ResponseEntity.ok(taskService.updateTaskStatus(taskId, taskStatus));
     }
 }

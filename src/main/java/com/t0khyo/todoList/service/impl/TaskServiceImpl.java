@@ -2,6 +2,7 @@ package com.t0khyo.todoList.service.impl;
 
 import com.t0khyo.todoList.dto.TaskDTO;
 import com.t0khyo.todoList.entity.Task;
+import com.t0khyo.todoList.entity.TaskStatus;
 import com.t0khyo.todoList.exception.TaskNotFoundException;
 import com.t0khyo.todoList.repository.TaskRepository;
 import com.t0khyo.todoList.service.TaskService;
@@ -44,6 +45,15 @@ public class TaskServiceImpl implements TaskService {
         theTask.setDueDate(taskDTO.getDueDate());
 
         return repository.save(theTask);
+    }
+
+    @Override
+    public Task updateTaskStatus(long taskId, String taskStatus) {
+        Task theTask = repository.findById(taskId).orElseThrow(() -> new TaskNotFoundException(taskId));
+        TaskStatus newStatus = TaskStatus.valueOf(taskStatus);
+        theTask.setStatus(newStatus);
+
+        return theTask;
     }
 
     @Override

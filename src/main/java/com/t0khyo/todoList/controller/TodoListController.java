@@ -25,14 +25,13 @@ public class TodoListController {
     // Get all todoLists
     @GetMapping("/")
     public ResponseEntity<List<TodoList>> getAllTodoLists() {
-        return new ResponseEntity<>(todoListService.findAll(), HttpStatus.FOUND);
+        return ResponseEntity.ok(todoListService.findAll());
     }
 
     // Get a todoList by its ID
     @GetMapping("/{todoListId}")
     public ResponseEntity<TodoList> getTodoListById(@PathVariable("todoListId") Long todoListId) {
-        TodoList todoList = todoListService.findById(todoListId);
-        return new ResponseEntity<>(todoList, HttpStatus.FOUND);
+        return ResponseEntity.ok(todoListService.findById(todoListId));
     }
 
     @GetMapping("/{todoListId}/tasks")
