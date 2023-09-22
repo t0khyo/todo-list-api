@@ -2,12 +2,17 @@ package com.t0khyo.todoList.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "task")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,8 +22,9 @@ public class Task {
     @Column(name = "title", nullable = false)
     private String title;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.INCOMPLETE;
 
     @Column(name = "dueDate")
     private LocalDate dueDate;
@@ -29,65 +35,12 @@ public class Task {
     private TodoList todoList;
 
     // constructors
-
-    public Task() {
-        this.status = TaskStatus.INCOMPLETE;
-    }
-
     public Task(String title, LocalDate dueDate) {
         this.title = title;
-        this.status = TaskStatus.INCOMPLETE;
         this.dueDate = dueDate;
-    }
-
-    // setters/getters
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        if (title == null || title.trim().isEmpty()) {
-            throw new IllegalArgumentException("title cannot be empty");
-        }
-        this.title = title;
-    }
-
-    public TaskStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TaskStatus status) {
-        this.status = Objects.requireNonNullElse(status, TaskStatus.INCOMPLETE);
-    }
-
-
-    public LocalDate getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(LocalDate dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public TodoList getTodoList() {
-        return todoList;
-    }
-
-    public void setTodoList(TodoList todoList) {
-        this.todoList = todoList;
     }
 
     // toString
-
     @Override
     public String toString() {
         return "Task{" + "id=" + id + ", title='" + title + '\'' + ", status=" + status + ", dueDate=" + dueDate + ", todoList=" + todoList.getName() + '}';
