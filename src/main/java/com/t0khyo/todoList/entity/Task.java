@@ -33,7 +33,6 @@ public class Task {
     private TodoList todoList;
 
     // constructors
-
     public Task() {
         this.status = TaskStatus.INCOMPLETE;
     }

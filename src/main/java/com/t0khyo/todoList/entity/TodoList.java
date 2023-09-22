@@ -15,7 +15,6 @@ import java.util.List;
 @Getter
 @Setter
 public class TodoList {
-
     // NOTE: mappedBy Refers to "todoList" property in "Task" class
     // Note: @JsonManagedReference Mark the 'tasks' property as the managed side of the relationship
     @OneToMany(mappedBy = "todoList", cascade = CascadeType.ALL)
