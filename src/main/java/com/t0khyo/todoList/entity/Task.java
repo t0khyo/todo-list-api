@@ -3,6 +3,7 @@ package com.t0khyo.todoList.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.time.LocalDate;
 @Table(name = "task")
 @Getter
 @Setter
+@NoArgsConstructor
 public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +24,7 @@ public class Task {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private TaskStatus status;
+    private TaskStatus status = TaskStatus.INCOMPLETE;
 
     @Column(name = "dueDate")
     private LocalDate dueDate;
@@ -33,13 +35,8 @@ public class Task {
     private TodoList todoList;
 
     // constructors
-    public Task() {
-        this.status = TaskStatus.INCOMPLETE;
-    }
-
     public Task(String title, LocalDate dueDate) {
         this.title = title;
-        this.status = TaskStatus.INCOMPLETE;
         this.dueDate = dueDate;
     }
 
